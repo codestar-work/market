@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 class Main {
-	// String server = "jdbc:mysql://128.199.119.79/market";
-	String server = "jdbc:mysql://104.154.199.75/market";
+	String server = "jdbc:mysql://128.199.119.79/market";
+	// String server = "jdbc:mysql://104.154.199.75/market";
 	String user   = "market";
 	String password = "m@rket";
 	
@@ -79,7 +79,12 @@ class Main {
 			ResultSet r = p.executeQuery();
 			if (r.next()) {
 				passed = true;
-				session.setAttribute("user", r.getString("name"));
+				Member m = new Member();
+				m.code = r.getLong("code");
+				m.email = r.getString("email");
+				m.password = r.getString("password");
+				m.name = r.getString("name");
+				session.setAttribute("user", m);
 			}
 			r.close(); p.close(); c.close();
 		} catch (Exception e) { }
@@ -91,11 +96,12 @@ class Main {
 	}
 	
 	@RequestMapping("/home")
-	String showHomePage(HttpSession session) {
-		String name = (String)session.getAttribute("user");
-		if (name == null) {
+	String showHomePage(HttpSession session, Model model) {
+		Member m = (Member)session.getAttribute("user");
+		if (m == null) {
 			return "redirect:/login";
 		} else {
+			model.addAttribute("member", m);
 			return "home";
 		}
 	}
