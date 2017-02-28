@@ -13,4 +13,7 @@ public class Post {
 	public long getMember()    { return member;  }
 	public String getStatus()  { return status;  }
 	public String getUpdated() { return updated; }
+	
+	String photo;
+	public String getPhoto()   { return photo;   }
 }

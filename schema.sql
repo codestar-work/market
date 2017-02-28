@@ -13,6 +13,8 @@ create table post (
   updated timestamp
 );
 -- add photo
+alter table post add photo varchar(200);
+
 -- change time to utc
 
 insert into post(topic, detail)

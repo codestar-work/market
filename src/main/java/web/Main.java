@@ -4,6 +4,7 @@ import java.util.*;
 import javax.servlet.http.*;
 import org.springframework.ui.*;
 import org.springframework.stereotype.*;
+import org.springframework.web.multipart.*;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -124,7 +125,7 @@ class Main {
 	
 	@RequestMapping(value="/new", method=RequestMethod.POST)
 	String saveNewPost(HttpSession session,
-			String topic, String detail) {
+			String topic, String detail, MultipartFile photo) {
 		Member m = (Member)session.getAttribute("user");
 		if (m == null) {
 			return "redirect:/login";
