@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 class Main {
-	String server = "jdbc:mysql://128.199.119.79/market";
+	String server = "jdbc:mysql://128.199.119.79/market?characterEncoding=UTF-8";
 	// String server = "jdbc:mysql://104.154.199.75/market";
 	String user   = "market";
 	String password = "m@rket";
@@ -112,7 +112,7 @@ class Main {
 		return "redirect:/";
 	}
 	
-	@RequestMapping("/new")
+	@RequestMapping(value="/new")
 	String showNewPage(HttpSession session) {
 		Member m = (Member)session.getAttribute("user");
 		if (m == null) {
@@ -122,4 +122,25 @@ class Main {
 		}
 	}
 	
+	@RequestMapping(value="/new", method=RequestMethod.POST)
+	String saveNewPost(HttpSession session,
+			String topic, String detail) {
+		Member m = (Member)session.getAttribute("user");
+		if (m == null) {
+			return "redirect:/login";
+		} else {
+			try {
+				String sql = "insert into post(topic, detail, member) " +
+							"values(?,?,?)";
+				Connection c = DriverManager.getConnection(
+					server, user, password);
+				PreparedStatement p = c.prepareStatement(sql);
+				p.setString(1, topic);
+				p.setString(2, detail);
+				p.setLong(3, m.code);
+				p.execute();
+			} catch (Exception e) { }
+			return "redirect:/home";
+		}
+	}
 }
