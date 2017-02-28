@@ -218,4 +218,33 @@ class Main {
 		model.addAttribute("result", list);
 		return "result";
 	}
+	
+	@RequestMapping("/edit/{code}")
+	String editPost(@PathVariable long code, HttpSession session, Model model) {
+		Member m = (Member)session.getAttribute("user");
+		if (m == null) {
+			return "redirect:/login";
+		} else {
+			Post post = new Post();
+			try {
+				String sql = "select * from post where member=? and code=?";
+				Connection c = DriverManager.getConnection(server, user, password);
+				PreparedStatement p = c.prepareStatement(sql);
+				p.setLong(1, m.code);
+				p.setLong(2, code);
+				ResultSet r = p.executeQuery();
+				if (r.next()) {
+					post.code = r.getLong("code");
+					post.topic = r.getString("topic");
+					post.detail = r.getString("detail");
+					post.status = r.getString("status");
+					post.member = r.getLong("member");
+					post.photo = r.getString("photo");
+				}
+				r.close(); p.close(); c.close();
+			} catch (Exception e) { }
+			model.addAttribute("post", post);
+			return "edit";
+		}
+	}
 }

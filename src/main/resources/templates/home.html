@@ -7,4 +7,13 @@
 	<a class='btn btn-outline-primary' href='/logout'>Log Out</a>
 </div>
 
+<div class='container'>
+	<#list post as p>
+		<a href='/view/${p.topic}'>${p.topic}</a>
+		<a href='/edit/${p.code}'>Edit</a>
+		<br>
+	</#list>
+	
+</div>
+
 <#include "footer.html">
