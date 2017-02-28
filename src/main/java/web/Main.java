@@ -271,4 +271,8 @@ class Main {
 			return "redirect:/home";
 		}
 	}
+	@RequestMapping("/*")
+	String showError() {
+		return "error";
+	}
 }
