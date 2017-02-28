@@ -1,0 +1,25 @@
+<#include "header.html">
+
+<style>
+	input,textarea {
+		margin-bottom: 6px;
+	}
+</style>
+
+<div class="container">
+	<form method="post">
+		<h1>New Post</h1>
+		<input name="topic"
+			class="form-control"
+			autofocus
+			placeholder="Topic">
+		<textarea name="detail"
+			class="form-control"
+			placeholder="Detail"
+			></textarea>
+		<button class="btn btn-primary"
+			>Post</button>
+	</form>
+</div>
+
+<#include "footer.html">

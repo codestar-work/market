@@ -112,4 +112,14 @@ class Main {
 		return "redirect:/";
 	}
 	
+	@RequestMapping("/new")
+	String showNewPage(HttpSession session) {
+		Member m = (Member)session.getAttribute("user");
+		if (m == null) {
+			return "redirect:/login";
+		} else {
+			return "new";
+		}
+	}
+	
 }
