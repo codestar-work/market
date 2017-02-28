@@ -1,0 +1,14 @@
+<#include "header.html">
+
+<div class='container'>
+	<i>Welcome</i>
+	<br>
+	<a href='/login' class='btn btn-outline-primary'>Log In</a>
+	<br>
+	<#list post as p>
+		<a href='/view/${p}'>${p}</a>
+		<br>
+	</#list>
+</div>
+
+<#include "footer.html">
