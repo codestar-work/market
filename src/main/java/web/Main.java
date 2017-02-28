@@ -240,11 +240,35 @@ class Main {
 					post.status = r.getString("status");
 					post.member = r.getLong("member");
 					post.photo = r.getString("photo");
+					if (post.photo == null) {
+						post.photo = "";
+					}
 				}
 				r.close(); p.close(); c.close();
 			} catch (Exception e) { }
 			model.addAttribute("post", post);
 			return "edit";
+		}
+	}
+	
+	@RequestMapping(value="/edit/{code}", method=RequestMethod.POST) 
+	String savePost(String topic, String detail, @PathVariable long code, 
+			HttpSession session) {
+		Member m = (Member)session.getAttribute("user");
+		if (m == null) {
+			return "redirect:/login";
+		} else {
+			String sql = "update post set topic=?, detail=? where code=? and member=?";
+			try {
+				Connection c = DriverManager.getConnection(server, user, password);
+				PreparedStatement p = c.prepareStatement(sql);
+				p.setString(1, topic);
+				p.setString(2, detail);
+				p.setLong(3, code);
+				p.setLong(4, m.code);
+				p.execute();
+			} catch (Exception e) { }
+			return "redirect:/home";
 		}
 	}
 }
