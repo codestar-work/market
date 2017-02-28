@@ -5,6 +5,13 @@
 	<br>
 	<a href='/login' class='btn btn-outline-primary'>Log In</a>
 	<br>
+	
+	<form action="/result">
+		<input name="query"
+			   class="form-control"
+			   placeholder="Search ...">
+	</form>
+	
 	<#list post as p>
 		<a href='/view/${p}'>${p}</a>
 		<br>

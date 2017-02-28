@@ -143,4 +143,28 @@ class Main {
 			return "redirect:/home";
 		}
 	}
+	
+	@RequestMapping("/result")
+	String search(String query, Model model) {
+		LinkedList list = new LinkedList();
+		try {
+			Connection c = DriverManager.getConnection(
+							server, user, password);
+			PreparedStatement p = c.prepareStatement(
+					"select * from post where topic like ?");
+			p.setString(1, "%" + query + "%");
+			ResultSet r = p.executeQuery();
+			while (r.next()) {
+				Post post = new Post();
+				post.code = r.getLong("code");
+				post.topic = r.getString("topic");
+				post.detail = r.getString("detail");
+				post.member = r.getLong("member");
+				post.status = r.getString("status");
+				list.add(post);
+			}
+		} catch (Exception e) { }
+		model.addAttribute("result", list);
+		return "result";
+	}
 }
