@@ -57,6 +57,10 @@ class Main {
 				post.member = r.getLong("member");
 				post.status = r.getString("status");
 				post.updated = r.getString("updated");
+				post.photo   = r.getString("photo");
+				if (post.photo == null) {
+					post.photo = "";
+				}
 			}
 			r.close(); p.close(); c.close();
 		} catch (Exception e) { }

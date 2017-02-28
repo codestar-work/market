@@ -4,6 +4,9 @@
 	${ post.topic } <br>
 	${ post.detail } <br>
 	${ post.status } <br>
+	<#if post.photo != "">
+		<img src="${ post.photo }" >
+	</#if>
 </div>
 
 <#include "footer.html">
