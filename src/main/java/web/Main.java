@@ -108,6 +108,28 @@ class Main {
 			return "redirect:/login";
 		} else {
 			model.addAttribute("member", m);
+			LinkedList list = new LinkedList();
+			try {
+				Connection c = DriverManager.getConnection(server, user, password);
+				Statement s = c.createStatement();
+				ResultSet r = s.executeQuery(
+						"select * from post where member = " + m.code);
+				while (r.next()) {
+					Post post = new Post();
+					post.code = r.getLong("code");
+					post.topic = r.getString("topic");
+					post.detail = r.getString("detail");
+					post.member = r.getLong("member");
+					post.status = r.getString("status");
+					post.photo  = r.getString("photo");
+					if (post.photo == null) {
+						post.photo = "";
+					}
+					list.add(post);
+				}
+				r.close(); s.close(); c.close();
+			} catch (Exception e) { }
+			model.addAttribute("post", list);
 			return "home";
 		}
 	}
