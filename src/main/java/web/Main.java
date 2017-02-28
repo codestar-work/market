@@ -1,4 +1,5 @@
 package web;
+import java.io.*;
 import java.sql.*;
 import java.util.*;
 import javax.servlet.http.*;
@@ -131,15 +132,38 @@ class Main {
 			return "redirect:/login";
 		} else {
 			try {
-				String sql = "insert into post(topic, detail, member) " +
-							"values(?,?,?)";
-				Connection c = DriverManager.getConnection(
-					server, user, password);
-				PreparedStatement p = c.prepareStatement(sql);
-				p.setString(1, topic);
-				p.setString(2, detail);
-				p.setLong(3, m.code);
-				p.execute();
+				if (photo == null) {
+					String sql = "insert into post(topic, detail, member) " +
+								"values(?,?,?)";
+					Connection c = DriverManager.getConnection(
+						server, user, password);
+					PreparedStatement p = c.prepareStatement(sql);
+					p.setString(1, topic);
+					p.setString(2, detail);
+					p.setLong(3, m.code);
+					p.execute();
+				} else {
+					String photoName = "/photo/" + UUID.randomUUID().toString() 
+								+ ".jpg";
+					String name = "./src/main/resources/public" + photoName;
+					FileOutputStream file = new FileOutputStream(name);
+					byte [ ] data = photo.getBytes();
+					for (int i = 0; i < data.length; i++) {
+						file.write(data[i]);
+					}
+					file.close();
+					
+					String sql = "insert into post(topic, detail, member, photo) " +
+								"values(?,?,?,?)";
+					Connection c = DriverManager.getConnection(
+						server, user, password);
+					PreparedStatement p = c.prepareStatement(sql);
+					p.setString(1, topic);
+					p.setString(2, detail);
+					p.setLong(3, m.code);
+					p.setString(4, photoName);
+					p.execute();
+				}
 			} catch (Exception e) { }
 			return "redirect:/home";
 		}
