@@ -1,0 +1,13 @@
+<#include "header.html">
+
+<div class="container">
+	<#list result as r>
+		<a href="/view/${r.topic}">
+			${r.topic}
+		</a>
+		<br>
+	</#list>
+	
+</div>
+
+<#include "footer.html">
